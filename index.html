@@ -34,7 +34,7 @@
   }
 
   .wrapper {
-    max-width: 1450px; /* ขยายความกว้างเพื่อรองรับคอลัมน์ทั้งหมด */
+    max-width: 1450px;
     margin: 0 auto;
   }
 
@@ -128,9 +128,9 @@
 
   /* Specific Header styles */
   th.dress-header { background: linear-gradient(135deg, #ff9a9e, #fecfef); color: #c2185b; width: 85px; }
-  th.break-header { background: linear-gradient(135deg, #e0e0e0, #f5f5f5); color: #616161; width: 40px; }
-  th.lunch-header { background: linear-gradient(135deg, #ffe566, #ffd700); color: #7a6000; width: 45px; }
-  th.assembly-header { background: linear-gradient(135deg, #ffb74d, #ff9800); color: white; width: 45px; }
+  th.break-header { background: linear-gradient(135deg, #e0e0e0, #f5f5f5); color: #616161; width: 40px; min-width: 40px; max-width: 40px; }
+  th.lunch-header { background: linear-gradient(135deg, #ffe566, #ffd700); color: #7a6000; width: 50px; min-width: 50px; max-width: 50px; }
+  th.assembly-header { background: linear-gradient(135deg, #ffb74d, #ff9800); color: white; width: 50px; min-width: 50px; max-width: 50px; }
   .time-text { font-size: 0.65rem; font-weight: normal; display: block; margin-top: 2px; }
 
   /* Day cells */
@@ -176,18 +176,34 @@
   .subj-teacher { font-size: 0.66rem; opacity: 0.85; display: block; margin-top: 2px; }
   .subj-icon  { font-size: 1.2rem; display: block; margin-bottom: 2px; }
 
-  /* Vertical Merged Cells (Breaks & Assemblies) */
+  /* Vertical Merged Cells (Breaks & Assemblies) - Fixed for html2canvas */
   td.vertical-merge {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    white-space: nowrap;
-    text-align: center;
     vertical-align: middle;
-    font-weight: 800;
-    letter-spacing: 1px;
-    padding: 10px 5px;
+    text-align: center;
+    padding: 0;
     border: 2px solid rgba(255,255,255,0.8);
     border-radius: 4px;
+  }
+
+  .v-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+  }
+
+  .v-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(-90deg);
+    white-space: nowrap;
+    font-weight: 800;
+    letter-spacing: 1px;
+    width: 0;
+    height: 0;
   }
 
   .assembly-col { background: linear-gradient(180deg, #ffe0b2, #ffcc80); color: #e65100; font-size: 0.95rem; }
@@ -332,7 +348,9 @@
           </td>
 
           <!-- กิจกรรมหน้าเสาธง (รวบ 5 แถว) -->
-          <td rowspan="5" class="vertical-merge assembly-col">กิจกรรมหน้าเสาธง BBL ส่งเสริมการอ่าน</td>
+          <td rowspan="5" class="vertical-merge assembly-col">
+            <div class="v-wrapper"><span class="v-text">กิจกรรมหน้าเสาธง BBL ส่งเสริมการอ่าน</span></div>
+          </td>
           
           <td class="subject math">
             <span class="subj-icon">🔢</span>
@@ -346,7 +364,9 @@
           </td>
           
           <!-- พัก 10 นาที (รวบ 5 แถว) -->
-          <td rowspan="5" class="vertical-merge break-col">พัก 10 นาที</td>
+          <td rowspan="5" class="vertical-merge break-col">
+            <div class="v-wrapper"><span class="v-text">พัก 10 นาที</span></div>
+          </td>
 
           <td class="subject english">
             <span class="subj-icon">🗣️</span>
@@ -355,7 +375,9 @@
           </td>
           
           <!-- พักกลางวัน (รวบ 5 แถว) -->
-          <td rowspan="5" class="vertical-merge lunch-col">พักรับประทานอาหารกลางวัน</td>
+          <td rowspan="5" class="vertical-merge lunch-col">
+            <div class="v-wrapper"><span class="v-text">พักรับประทานอาหารกลางวัน</span></div>
+          </td>
 
           <td class="subject chinese">
             <span class="subj-icon">🈳</span>
@@ -364,7 +386,9 @@
           </td>
           
           <!-- พัก 10 นาที (รวบ 5 แถว) -->
-          <td rowspan="5" class="vertical-merge break-col">พัก 10 นาที</td>
+          <td rowspan="5" class="vertical-merge break-col">
+            <div class="v-wrapper"><span class="v-text">พัก 10 นาที</span></div>
+          </td>
 
           <td class="subject career">
             <span class="subj-icon">🔨</span>
@@ -373,7 +397,9 @@
           </td>
 
           <!-- พัก 10 นาที (รวบ 5 แถว) -->
-          <td rowspan="5" class="vertical-merge break-col">พัก 10 นาที</td>
+          <td rowspan="5" class="vertical-merge break-col">
+            <div class="v-wrapper"><span class="v-text">พัก 10 นาที</span></div>
+          </td>
 
           <td class="subject thai">
             <span class="subj-icon">📖</span>
@@ -394,7 +420,7 @@
           </td>
 
           <td class="subject dress-pink">
-            <span class="subj-icon">🩷</span>
+            <span class="subj-icon">💗</span> <!-- แก้ไขอิโมจิหัวใจสีชมพูเป็นตัวที่รองรับสากล -->
             <span class="subj-name">ชุดนักเรียน</span>
           </td>
 
@@ -619,9 +645,9 @@
 
     setTimeout(() => {
       html2canvas(document.body, {
-        scale: 2, // เพิ่มความคมชัดเป็น 2 เท่า
+        scale: 2, 
         useCORS: true,
-        backgroundColor: '#e8f5e9' // สีพื้นหลังเผื่อโหลด Gradient ไม่ทัน
+        backgroundColor: '#e8f5e9'
       }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'ตารางเรียน_ป2.png';
@@ -638,7 +664,7 @@
           btn.disabled = false;
         }, 2000);
       });
-    }, 300);
+    }, 500); // เพิ่มเวลาหน่วงเล็กน้อยเพื่อให้แน่ใจว่าฟอนต์และสไตล์ประมวลผลเสร็จแล้วก่อนแคป
   });
 </script>
 </body>
