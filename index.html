@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ตารางเรียน ป.2</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700;800&display=swap" rel="stylesheet">
-<!-- เพิ่ม Library html2canvas สำหรับแปลง HTML เป็นรูปภาพ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root {
@@ -29,77 +28,14 @@
 
   body {
     font-family: 'Kanit', sans-serif;
-    background-color: #f4f7f6;
+    background: linear-gradient(135deg, #fce4ec 0%, #e8f5e9 25%, #e3f2fd 50%, #fff9c4 75%, #f3e5f5 100%);
     min-height: 100vh;
     padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  /* Container สำหรับจัดกลุ่มเพื่อ Capture เป็นรูปภาพ */
-  #capture-area {
-    background: linear-gradient(135deg, #fce4ec 0%, #e8f5e9 25%, #e3f2fd 50%, #fff9c4 75%, #f3e5f5 100%);
-    padding: 40px;
-    border-radius: 30px;
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    max-width: 1380px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-  }
-
-  /* Floating stars background */
-  #capture-area::before {
-    content: '⭐ ✨ 🌟 ⭐ ✨ 🌟 ⭐ ✨ 🌟 ⭐ ✨ 🌟';
-    position: absolute;
-    top: -10px; left: 0; right: 0;
-    font-size: 22px;
-    letter-spacing: 40px;
-    opacity: 0.25;
-    animation: floatStars 8s linear infinite;
-    pointer-events: none;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-
-  @keyframes floatStars {
-    from { transform: translateY(-20px); }
-    to   { transform: translateY(100vh); }
   }
 
   .wrapper {
-    width: 100%;
+    max-width: 1450px; /* ขยายความกว้างเพื่อรองรับคอลัมน์ทั้งหมด */
     margin: 0 auto;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* ปุ่มดาวน์โหลดรูปภาพ */
-  .download-btn {
-    margin-top: 30px;
-    margin-bottom: 20px;
-    background: linear-gradient(135deg, #6c63ff, #a29bfe);
-    color: white;
-    border: none;
-    padding: 18px 40px;
-    font-size: 1.2rem;
-    font-family: 'Kanit', sans-serif;
-    font-weight: 700;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 8px 25px rgba(108, 99, 255, 0.4);
-    transition: transform 0.2s, box-shadow 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .download-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(108, 99, 255, 0.6);
-  }
-  .download-btn:active {
-    transform: translateY(1px);
   }
 
   /* Header */
@@ -159,7 +95,7 @@
   table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 1100px;
+    min-width: 1350px;
   }
 
   /* Header row */
@@ -191,9 +127,11 @@
   }
 
   /* Specific Header styles */
-  th.break-header { background: linear-gradient(135deg, #e0e0e0, #f5f5f5); color: #616161; width: 55px; min-width: 55px; }
-  th.lunch-header { background: linear-gradient(135deg, #ffe566, #ffd700); color: #7a6000; width: 60px; min-width: 60px; }
-  th.assembly-header { background: linear-gradient(135deg, #ffb74d, #ff9800); color: white; width: 60px; min-width: 60px; }
+  th.dress-header { background: linear-gradient(135deg, #ff9a9e, #fecfef); color: #c2185b; width: 85px; }
+  th.break-header { background: linear-gradient(135deg, #e0e0e0, #f5f5f5); color: #616161; width: 40px; }
+  th.lunch-header { background: linear-gradient(135deg, #ffe566, #ffd700); color: #7a6000; width: 45px; }
+  th.assembly-header { background: linear-gradient(135deg, #ffb74d, #ff9800); color: white; width: 45px; }
+  .time-text { font-size: 0.65rem; font-weight: normal; display: block; margin-top: 2px; }
 
   /* Day cells */
   .day-cell {
@@ -224,7 +162,7 @@
     cursor: default;
     border-radius: 4px;
     position: relative;
-    width: auto;
+    width: 95px;
   }
 
   td.subject:hover {
@@ -238,36 +176,23 @@
   .subj-teacher { font-size: 0.66rem; opacity: 0.85; display: block; margin-top: 2px; }
   .subj-icon  { font-size: 1.2rem; display: block; margin-bottom: 2px; }
 
-  /* แก้ไข: การจัดคอลัมน์แนวตั้งแบบใหม่ (แก้ปัญหา html2canvas เรนเดอร์ฟอนต์เพี้ยน) */
+  /* Vertical Merged Cells (Breaks & Assemblies) */
   td.vertical-merge {
-    position: relative; /* ใช้ Position แทน Writing-mode */
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
     text-align: center;
     vertical-align: middle;
-    border: 2px solid rgba(255,255,255,0.8);
-    border-radius: 4px;
-    padding: 0;
-  }
-
-  /* กล่องเก็บข้อความแนวตั้ง */
-  .vertical-text-box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-90deg);
-    white-space: nowrap;
     font-weight: 800;
     letter-spacing: 1px;
-    display: inline-block;
+    padding: 10px 5px;
+    border: 2px solid rgba(255,255,255,0.8);
+    border-radius: 4px;
   }
 
-  .assembly-col { background: linear-gradient(180deg, #ffe0b2, #ffcc80); color: #e65100; }
-  .break-col { background: linear-gradient(180deg, #f5f5f5, #e0e0e0); color: #616161; }
-  .lunch-col { background: linear-gradient(180deg, #fff9b0, #ffe566); color: #7a6000; }
-
-  /* ขนาดฟอนต์แยกตามคอลัมน์พิเศษ */
-  .assembly-col .vertical-text-box { font-size: 0.95rem; }
-  .break-col .vertical-text-box { font-size: 0.85rem; }
-  .lunch-col .vertical-text-box { font-size: 0.95rem; letter-spacing: 2px; }
+  .assembly-col { background: linear-gradient(180deg, #ffe0b2, #ffcc80); color: #e65100; font-size: 0.95rem; }
+  .break-col { background: linear-gradient(180deg, #f5f5f5, #e0e0e0); color: #616161; font-size: 0.8rem; }
+  .lunch-col { background: linear-gradient(180deg, #fff9b0, #ffe566); color: #7a6000; font-size: 0.95rem; letter-spacing: 2px; }
 
   /* Subject colours */
   .math     { background: linear-gradient(135deg, #ffb3d1, #ff6b9d22); color: #a8004e; }
@@ -286,6 +211,13 @@
   .plc      { background: linear-gradient(135deg, #dde3e8, #b0bec522); color: #37474f; }
   .activity { background: linear-gradient(135deg, #b8e8ff, #82cfff22); color: #00426a; }
   .supple   { background: linear-gradient(135deg, #ffe8d0, #ffd3a022); color: #6a3800; }
+
+  /* Dress Code Colors */
+  .dress-yellow { background: linear-gradient(135deg, #fff9c4, #fff59d); color: #f57f17; }
+  .dress-pink   { background: linear-gradient(135deg, #fce4ec, #f8bbd0); color: #c2185b; }
+  .dress-green  { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); color: #2e7d32; }
+  .dress-orange { background: linear-gradient(135deg, #fff3e0, #ffe0b2); color: #e65100; }
+  .dress-blue   { background: linear-gradient(135deg, #e3f2fd, #bbdefb); color: #1565c0; }
 
   /* Note section */
   .note {
@@ -319,19 +251,42 @@
   .footer-names .role { color: #888; font-size: 0.8rem; }
   .footer-line { border-top: 1px solid #ccc; width: 150px; margin: 0 auto 8px auto; }
 
+  /* Download Button Styles */
+  .action-buttons {
+    text-align: center;
+    margin-top: 30px;
+    padding-bottom: 20px;
+  }
+  #downloadBtn {
+    background: linear-gradient(135deg, #ff6fb7, #6c63ff);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: 'Kanit', sans-serif;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(108,99,255,0.4);
+    transition: all 0.3s ease;
+  }
+  #downloadBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(108,99,255,0.6);
+  }
+  #downloadBtn:active {
+    transform: translateY(1px);
+  }
 </style>
 </head>
 <body>
-
-<!-- เริ่มต้นส่วนที่จะถูกแปลงเป็นรูปภาพ -->
-<div id="capture-area">
-  <div class="wrapper">
+<div class="wrapper">
 
   <!-- Header -->
   <div class="header">
     <div class="school-name">โรงเรียนหนองจอกกงลิบฮัวเคียว</div>
     <div class="school-sub">ตารางเรียนภาคเรียนที่ 1 ปีการศึกษา 2569</div>
-    <div class="school-sub">ระดับชั้นประถมศึกษาปีที่ 2 &nbsp;|&nbsp; ครูประจำชั้น: <strong>ครูฐิตาภรณ์</strong></div>
+    <div class="school-sub">ระดับชั้นประถมศึกษาปีที่ 2 &nbsp;|&nbsp; ครูประจำชั้น: <strong>ครูฐิตาภรณ์ สุดาร</strong></div>
   </div>
 
   <!-- Table -->
@@ -340,25 +295,26 @@
       <thead>
         <tr>
           <th rowspan="2" style="font-size:1rem; width: 90px;">📅<br>วัน/เวลา</th>
-          <th rowspan="2" class="assembly-header">🇹🇭<br>กิจกรรม<br><span style="font-size:0.65rem; font-weight:normal;">07:50–08:40</span></th>
-          <th colspan="2">⏰ ช่วงเช้า</th>
+          <th rowspan="2" class="dress-header">👕<br>การแต่งกาย</th>
+          <th rowspan="2" class="assembly-header">🇹🇭<br>กิจกรรม<span class="time-text">07:50–08:40</span></th>
+          <th colspan="2">⏰ เช้า</th>
           <th rowspan="2" class="break-header">พัก<br>10<br>นาที</th>
           <th colspan="1">☀️ สาย</th>
-          <th rowspan="2" class="lunch-header">🍱<br>พักกลางวัน<br><span style="font-size:0.65rem; font-weight:normal;">11:20–12:10</span></th>
-          <th colspan="1">🌤️ บ่าย 1</th>
+          <th rowspan="2" class="lunch-header">🍱<br>พักกลางวัน<span class="time-text">11:20–12:10</span></th>
+          <th colspan="1">🌤️ บ่าย</th>
           <th rowspan="2" class="break-header">พัก<br>10<br>นาที</th>
-          <th colspan="1">🌤️ บ่าย 2</th>
+          <th colspan="1">🌤️ บ่าย</th>
           <th rowspan="2" class="break-header">พัก<br>10<br>นาที</th>
-          <th colspan="2">🌤️ บ่าย 3</th>
+          <th colspan="2">🌤️ บ่าย</th>
         </tr>
         <tr>
-          <th style="width: 95px;">08:40–09:30</th>
-          <th style="width: 95px;">09:30–10:20</th>
-          <th style="width: 95px;">10:30–11:20</th>
-          <th style="width: 95px;">12:10–13:00</th>
-          <th style="width: 95px;">13:10–14:00</th>
-          <th style="width: 95px;">14:10–15:00</th>
-          <th style="width: 95px;">15:00–16:00</th>
+          <th>08:40–09:30</th>
+          <th>09:30–10:20</th>
+          <th>10:30–11:20</th>
+          <th>12:10–13:00</th>
+          <th>13:10–14:00</th>
+          <th>14:10–15:00</th>
+          <th>15:00–16:00</th>
         </tr>
       </thead>
       <tbody>
@@ -369,10 +325,14 @@
             <span class="day-emoji">🌙</span>
             วันจันทร์
           </td>
-          <!-- เปลี่ยนมาใช้ div.vertical-text-box แทน -->
-          <td rowspan="5" class="vertical-merge assembly-col">
-            <div class="vertical-text-box">กิจกรรมหน้าเสาธง BBL ส่งเสริมการอ่าน</div>
+          
+          <td class="subject dress-yellow">
+            <span class="subj-icon">💛</span>
+            <span class="subj-name">ชุดนักเรียน</span>
           </td>
+
+          <!-- กิจกรรมหน้าเสาธง (รวบ 5 แถว) -->
+          <td rowspan="5" class="vertical-merge assembly-col">กิจกรรมหน้าเสาธง BBL ส่งเสริมการอ่าน</td>
           
           <td class="subject math">
             <span class="subj-icon">🔢</span>
@@ -385,9 +345,8 @@
             <span class="subj-teacher">ครูภัทรียา</span>
           </td>
           
-          <td rowspan="5" class="vertical-merge break-col">
-            <div class="vertical-text-box">พัก 10 นาที</div>
-          </td>
+          <!-- พัก 10 นาที (รวบ 5 แถว) -->
+          <td rowspan="5" class="vertical-merge break-col">พัก 10 นาที</td>
 
           <td class="subject english">
             <span class="subj-icon">🗣️</span>
@@ -395,19 +354,17 @@
             <span class="subj-teacher">T.Myra</span>
           </td>
           
-          <td rowspan="5" class="vertical-merge lunch-col">
-            <div class="vertical-text-box">พักรับประทานอาหารกลางวัน</div>
-          </td>
+          <!-- พักกลางวัน (รวบ 5 แถว) -->
+          <td rowspan="5" class="vertical-merge lunch-col">พักรับประทานอาหารกลางวัน</td>
 
           <td class="subject chinese">
             <span class="subj-icon">🈳</span>
             <span class="subj-name">ภาษาจีน</span>
             <span class="subj-teacher">ครูอารียา</span>
           </td>
-
-          <td rowspan="5" class="vertical-merge break-col">
-            <div class="vertical-text-box">พัก 10 นาที</div>
-          </td>
+          
+          <!-- พัก 10 นาที (รวบ 5 แถว) -->
+          <td rowspan="5" class="vertical-merge break-col">พัก 10 นาที</td>
 
           <td class="subject career">
             <span class="subj-icon">🔨</span>
@@ -415,9 +372,8 @@
             <span class="subj-teacher">ครูกนกวรรณ</span>
           </td>
 
-          <td rowspan="5" class="vertical-merge break-col">
-            <div class="vertical-text-box">พัก 10 นาที</div>
-          </td>
+          <!-- พัก 10 นาที (รวบ 5 แถว) -->
+          <td rowspan="5" class="vertical-merge break-col">พัก 10 นาที</td>
 
           <td class="subject thai">
             <span class="subj-icon">📖</span>
@@ -436,6 +392,12 @@
             <span class="day-emoji">🔴</span>
             วันอังคาร
           </td>
+
+          <td class="subject dress-pink">
+            <span class="subj-icon">🩷</span>
+            <span class="subj-name">ชุดนักเรียน</span>
+          </td>
+
           <td class="subject math">
             <span class="subj-icon">🔢</span>
             <span class="subj-name">คณิตศาสตร์</span>
@@ -478,6 +440,12 @@
             <span class="day-emoji">💚</span>
             วันพุธ
           </td>
+
+          <td class="subject dress-green">
+            <span class="subj-icon">💚</span>
+            <span class="subj-name">ชุดลูกเสือ<br>ยุวกาชาด</span>
+          </td>
+
           <td class="subject math">
             <span class="subj-icon">🔢</span>
             <span class="subj-name">คณิตศาสตร์</span>
@@ -520,6 +488,12 @@
             <span class="day-emoji">🟠</span>
             วันพฤหัส
           </td>
+
+          <td class="subject dress-orange">
+            <span class="subj-icon">🧡</span>
+            <span class="subj-name">ชุดพละ<br>สีเหลือง</span>
+          </td>
+
           <td class="subject math">
             <span class="subj-icon">🔢</span>
             <span class="subj-name">คณิตศาสตร์</span>
@@ -562,6 +536,12 @@
             <span class="day-emoji">🎉</span>
             วันศุกร์
           </td>
+
+          <td class="subject dress-blue">
+            <span class="subj-icon">💙</span>
+            <span class="subj-name">ชุดวัฒนธรรมจีน</span>
+          </td>
+
           <td class="subject math">
             <span class="subj-icon">🔢</span>
             <span class="subj-name">คณิตศาสตร์</span>
@@ -602,7 +582,9 @@
   </div>
 
   <!-- Note -->
-  
+  <div class="note">
+    <strong>หมายเหตุ:</strong> วิชาหน้าที่พลเมืองเป็นรายวิชาเพิ่มเติม จัดการเรียนการสอนโดยบูรณาการลงสู่กิจกรรมที่โรงเรียนดำเนินการอยู่แล้ว (กิจกรรมหน้าเสาธง, กีฬาสี, กิจกรรมประเพณี วันสำคัญต่างๆ, ลูกเสือ - ยุวกาชาด)
+  </div>
 
   <!-- Footer names -->
   <div class="footer-names">
@@ -618,58 +600,46 @@
     </div>
   </div>
 
-  </div>
 </div>
-<!-- สิ้นสุดส่วนที่จะถูกแปลงเป็นรูปภาพ -->
 
-<!-- ปุ่มกดเพื่อดาวน์โหลด -->
-<button class="download-btn" onclick="downloadTable()">
-  📸 บันทึกตารางเรียนเป็นรูปภาพความละเอียดสูง
-</button>
+<!-- Download Button Container -->
+<div class="action-buttons" data-html2canvas-ignore="true">
+  <button id="downloadBtn">📸 ดาวน์โหลดตารางเรียนเป็นรูปภาพ</button>
+</div>
 
 <script>
-  function downloadTable() {
-    const btn = document.querySelector('.download-btn');
+  document.getElementById('downloadBtn').addEventListener('click', function() {
+    const btn = this;
     const originalText = btn.innerHTML;
-    
-    // เปลี่ยนข้อความปุ่มระหว่างรอ
-    btn.innerHTML = '⏳ กำลังสร้างรูปภาพ กรุณารอสักครู่...';
-    btn.style.opacity = '0.7';
-    btn.style.cursor = 'wait';
+    btn.innerHTML = "⏳ กำลังสร้างรูปภาพ...";
+    btn.disabled = true;
 
-    const captureArea = document.getElementById('capture-area');
+    // เลื่อนหน้าจอกลับไปด้านบนสุดก่อนทำการแคปเจอร์
+    window.scrollTo(0, 0);
 
-    // เพิ่มความคมชัด Scale = 4 (400% DPI)
-    html2canvas(captureArea, {
-      scale: 4, 
-      backgroundColor: '#ffffff',
-      useCORS: true,
-      logging: false
-    }).then(canvas => {
-      // แปลงเป็นข้อมูลภาพ PNG
-      const image = canvas.toDataURL("image/png");
-      
-      // สร้างลิงก์และสั่งคลิกเพื่อดาวน์โหลด
-      const link = document.createElement('a');
-      link.href = image;
-      link.download = 'ตารางเรียน_ป2_2569.png';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    setTimeout(() => {
+      html2canvas(document.body, {
+        scale: 2, // เพิ่มความคมชัดเป็น 2 เท่า
+        useCORS: true,
+        backgroundColor: '#e8f5e9' // สีพื้นหลังเผื่อโหลด Gradient ไม่ทัน
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'ตารางเรียน_ป2.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
 
-      // คืนค่าปุ่มกลับเหมือนเดิม
-      btn.innerHTML = originalText;
-      btn.style.opacity = '1';
-      btn.style.cursor = 'pointer';
-    }).catch(err => {
-      console.error("เกิดข้อผิดพลาดในการสร้างรูปภาพ:", err);
-      alert("ไม่สามารถสร้างรูปภาพได้ กรุณาลองใหม่อีกครั้ง");
-      btn.innerHTML = originalText;
-      btn.style.opacity = '1';
-      btn.style.cursor = 'pointer';
-    });
-  }
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }).catch(err => {
+        console.error("Error generating image: ", err);
+        btn.innerHTML = "❌ เกิดข้อผิดพลาด";
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+        }, 2000);
+      });
+    }, 300);
+  });
 </script>
-
 </body>
 </html>
