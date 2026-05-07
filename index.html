@@ -28,9 +28,17 @@
 
   body {
     font-family: 'Kanit', sans-serif;
+    background-color: #f8f9fa; /* สีพื้นหลังรอบนอกสุด */
+    margin: 0;
+  }
+
+  /* พื้นที่เป้าหมายสำหรับการแคปเจอร์รูปภาพ */
+  #captureArea {
     background: linear-gradient(135deg, #fce4ec 0%, #e8f5e9 25%, #e3f2fd 50%, #fff9c4 75%, #f3e5f5 100%);
-    min-height: 100vh;
     padding: 20px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    transition: width 0.1s;
   }
 
   .wrapper {
@@ -89,13 +97,13 @@
     box-shadow: 0 10px 40px rgba(0,0,0,0.12);
     overflow: hidden;
     border: 3px solid white;
-    overflow-x: auto;
+    overflow-x: auto; /* เลื่อนซ้ายขวาได้ในจอมือถือ */
   }
 
   table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 1350px;
+    min-width: 1350px; /* บังคับความกว้างตารางขั้นต่ำ */
   }
 
   /* Header row */
@@ -270,8 +278,9 @@
   /* Download Button Styles */
   .action-buttons {
     text-align: center;
-    margin-top: 30px;
-    padding-bottom: 20px;
+    margin-top: 20px;
+    padding-bottom: 40px;
+    background-color: #f8f9fa; /* แมทช์กับพื้นหลังบอดี้ */
   }
   #downloadBtn {
     background: linear-gradient(135deg, #ff6fb7, #6c63ff);
@@ -296,336 +305,335 @@
 </style>
 </head>
 <body>
-<div class="wrapper">
 
-  <!-- Header -->
-  <div class="header">
-    <div class="school-name">โรงเรียนหนองจอกกงลิบฮัวเคียว</div>
-    <div class="school-sub">ตารางเรียนภาคเรียนที่ 1 ปีการศึกษา 2569</div>
-    <div class="school-sub">ระดับชั้นประถมศึกษาปีที่ 2 &nbsp;|&nbsp; ครูประจำชั้น: <strong>ครูฐิตาภรณ์ สุดาร</strong></div>
-  </div>
+<!-- พื้นที่ถูกห่อหุ้มสำหรับการดาวน์โหลดเป็นภาพ -->
+<div id="captureArea">
+  <div class="wrapper">
 
-  <!-- Table -->
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th rowspan="2" style="font-size:1rem; width: 90px;">📅<br>วัน/เวลา</th>
-          <th rowspan="2" class="dress-header">👕<br>การแต่งกาย</th>
-          <th rowspan="2" class="assembly-header">🇹🇭<br>กิจกรรม<span class="time-text">07:50–08:40</span></th>
-          <th colspan="2">⏰ เช้า</th>
-          <th rowspan="2" class="break-header">พัก<br>10<br>นาที</th>
-          <th colspan="1">☀️ สาย</th>
-          <th rowspan="2" class="lunch-header">🍱<br>พักกลางวัน<span class="time-text">11:20–12:10</span></th>
-          <th colspan="1">🌤️ บ่าย</th>
-          <th rowspan="2" class="break-header">พัก<br>10<br>นาที</th>
-          <th colspan="1">🌤️ บ่าย</th>
-          <th rowspan="2" class="break-header">พัก<br>10<br>นาที</th>
-          <th colspan="2">🌤️ บ่าย</th>
-        </tr>
-        <tr>
-          <th>08:40–09:30</th>
-          <th>09:30–10:20</th>
-          <th>10:30–11:20</th>
-          <th>12:10–13:00</th>
-          <th>13:10–14:00</th>
-          <th>14:10–15:00</th>
-          <th>15:00–16:00</th>
-        </tr>
-      </thead>
-      <tbody>
-
-        <!-- วันจันทร์ -->
-        <tr>
-          <td class="day-cell">
-            <span class="day-emoji">🌙</span>
-            วันจันทร์
-          </td>
-          
-          <td class="subject dress-yellow">
-            <span class="subj-icon">💛</span>
-            <span class="subj-name">ชุดนักเรียน</span>
-          </td>
-
-          <!-- กิจกรรมหน้าเสาธง (รวบ 5 แถว) -->
-          <td rowspan="5" class="vertical-merge assembly-col">
-            <div class="v-wrapper"><span class="v-text">กิจกรรมหน้าเสาธง BBL ส่งเสริมการอ่าน</span></div>
-          </td>
-          
-          <td class="subject math">
-            <span class="subj-icon">🔢</span>
-            <span class="subj-name">คณิตศาสตร์</span>
-            <span class="subj-teacher">ครูฐิตาภรณ์</span>
-          </td>
-          <td class="subject art">
-            <span class="subj-icon">🎵</span>
-            <span class="subj-name">ดนตรี/ศิลปะ</span>
-            <span class="subj-teacher">ครูภัทรียา</span>
-          </td>
-          
-          <!-- พัก 10 นาที (รวบ 5 แถว) -->
-          <td rowspan="5" class="vertical-merge break-col">
-            <div class="v-wrapper"><span class="v-text">พัก 10 นาที</span></div>
-          </td>
-
-          <td class="subject english">
-            <span class="subj-icon">🗣️</span>
-            <span class="subj-name">ภาษาอังกฤษ</span>
-            <span class="subj-teacher">T.Myra</span>
-          </td>
-          
-          <!-- พักกลางวัน (รวบ 5 แถว) -->
-          <td rowspan="5" class="vertical-merge lunch-col">
-            <div class="v-wrapper"><span class="v-text">พักรับประทานอาหารกลางวัน</span></div>
-          </td>
-
-          <td class="subject chinese">
-            <span class="subj-icon">🈳</span>
-            <span class="subj-name">ภาษาจีน</span>
-            <span class="subj-teacher">ครูอารียา</span>
-          </td>
-          
-          <!-- พัก 10 นาที (รวบ 5 แถว) -->
-          <td rowspan="5" class="vertical-merge break-col">
-            <div class="v-wrapper"><span class="v-text">พัก 10 นาที</span></div>
-          </td>
-
-          <td class="subject career">
-            <span class="subj-icon">🔨</span>
-            <span class="subj-name">การงานอาชีพ</span>
-            <span class="subj-teacher">ครูกนกวรรณ</span>
-          </td>
-
-          <!-- พัก 10 นาที (รวบ 5 แถว) -->
-          <td rowspan="5" class="vertical-merge break-col">
-            <div class="v-wrapper"><span class="v-text">พัก 10 นาที</span></div>
-          </td>
-
-          <td class="subject thai">
-            <span class="subj-icon">📖</span>
-            <span class="subj-name">ภาษาไทย</span>
-            <span class="subj-teacher">ครูฐิตาภรณ์</span>
-          </td>
-          <td class="subject supple">
-            <span class="subj-icon">🌟</span>
-            <span class="subj-name">สอนเสริม</span>
-          </td>
-        </tr>
-
-        <!-- วันอังคาร -->
-        <tr>
-          <td class="day-cell">
-            <span class="day-emoji">🔴</span>
-            วันอังคาร
-          </td>
-
-          <td class="subject dress-pink">
-            <span class="subj-icon">💗</span> <!-- แก้ไขอิโมจิหัวใจสีชมพูเป็นตัวที่รองรับสากล -->
-            <span class="subj-name">ชุดนักเรียน</span>
-          </td>
-
-          <td class="subject math">
-            <span class="subj-icon">🔢</span>
-            <span class="subj-name">คณิตศาสตร์</span>
-            <span class="subj-teacher">ครูฐิตาภรณ์</span>
-          </td>
-          <td class="subject english">
-            <span class="subj-icon">🗣️</span>
-            <span class="subj-name">ภาษาอังกฤษ</span>
-            <span class="subj-teacher">ครูพรพนา</span>
-          </td>
-          <td class="subject thai">
-            <span class="subj-icon">📖</span>
-            <span class="subj-name">ภาษาไทย</span>
-            <span class="subj-teacher">ครูฐิตาภรณ์</span>
-          </td>
-          <td class="subject history">
-            <span class="subj-icon">🏛️</span>
-            <span class="subj-name">ประวัติศาสตร์</span>
-            <span class="subj-teacher">ครูฐิตาภรณ์</span>
-          </td>
-          <td class="subject art">
-            <span class="subj-icon">💃</span>
-            <span class="subj-name">นาฏศิลป์/ศิลปะ</span>
-            <span class="subj-teacher">ครูภัทรียา</span>
-          </td>
-          <td class="subject computer">
-            <span class="subj-icon">💻</span>
-            <span class="subj-name">คอมพิวเตอร์</span>
-            <span class="subj-teacher">ครูจุฬาลักษณ์</span>
-          </td>
-          <td class="subject supple">
-            <span class="subj-icon">🌟</span>
-            <span class="subj-name">สอนเสริม</span>
-          </td>
-        </tr>
-
-        <!-- วันพุธ -->
-        <tr>
-          <td class="day-cell">
-            <span class="day-emoji">💚</span>
-            วันพุธ
-          </td>
-
-          <td class="subject dress-green">
-            <span class="subj-icon">💚</span>
-            <span class="subj-name">ชุดลูกเสือ<br>ยุวกาชาด</span>
-          </td>
-
-          <td class="subject math">
-            <span class="subj-icon">🔢</span>
-            <span class="subj-name">คณิตศาสตร์</span>
-            <span class="subj-teacher">ครูฐิตาภรณ์</span>
-          </td>
-          <td class="subject thai">
-            <span class="subj-icon">📖</span>
-            <span class="subj-name">ภาษาไทย</span>
-            <span class="subj-teacher">ครูฐิตาภรณ์</span>
-          </td>
-          <td class="subject english">
-            <span class="subj-icon">💬</span>
-            <span class="subj-name">เสริมอังกฤษ</span>
-            <span class="subj-teacher">ครูสายพิณ</span>
-          </td>
-          <td class="subject scout">
-            <span class="subj-icon">⚜️</span>
-            <span class="subj-name">ลูกเสือ</span>
-            <span class="subj-teacher">ยุวกาชาด</span>
-          </td>
-          <td class="subject social">
-            <span class="subj-icon">🌏</span>
-            <span class="subj-name">สังคมศึกษา</span>
-            <span class="subj-teacher">ครูฐิตาภรณ์</span>
-          </td>
-          <td class="subject pe">
-            <span class="subj-icon">🩺</span>
-            <span class="subj-name">สุขศึกษา</span>
-            <span class="subj-teacher">ครูภัทรียา</span>
-          </td>
-          <td class="subject plc">
-            <span class="subj-icon">👩‍🏫</span>
-            <span class="subj-name">PLC</span>
-          </td>
-        </tr>
-
-        <!-- วันพฤหัส -->
-        <tr>
-          <td class="day-cell">
-            <span class="day-emoji">🟠</span>
-            วันพฤหัส
-          </td>
-
-          <td class="subject dress-orange">
-            <span class="subj-icon">🧡</span>
-            <span class="subj-name">ชุดพละ<br>สีเหลือง</span>
-          </td>
-
-          <td class="subject math">
-            <span class="subj-icon">🔢</span>
-            <span class="subj-name">คณิตศาสตร์</span>
-            <span class="subj-teacher">ครูฐิตาภรณ์</span>
-          </td>
-          <td class="subject chinese">
-            <span class="subj-icon">🈳</span>
-            <span class="subj-name">ภาษาจีน</span>
-            <span class="subj-teacher">ครูอารียา</span>
-          </td>
-          <td class="subject science">
-            <span class="subj-icon">🔬</span>
-            <span class="subj-name">วิทยาศาสตร์</span>
-            <span class="subj-teacher">ครูฐิตาภรณ์</span>
-          </td>
-          <td class="subject pe">
-            <span class="subj-icon">🏃</span>
-            <span class="subj-name">พละศึกษา</span>
-            <span class="subj-teacher">ครูเจษฎา</span>
-          </td>
-          <td class="subject activity">
-            <span class="subj-icon">🎭</span>
-            <span class="subj-name">ชมรม</span>
-          </td>
-          <td class="subject english">
-            <span class="subj-icon">💬</span>
-            <span class="subj-name">เสริมอังกฤษ</span>
-            <span class="subj-teacher">ครูสายพิณ</span>
-          </td>
-          <td class="subject thai">
-            <span class="subj-icon">📖</span>
-            <span class="subj-name">ภาษาไทย</span>
-            <span class="subj-teacher">ครูฐิตาภรณ์</span>
-          </td>
-        </tr>
-
-        <!-- วันศุกร์ -->
-        <tr>
-          <td class="day-cell">
-            <span class="day-emoji">🎉</span>
-            วันศุกร์
-          </td>
-
-          <td class="subject dress-blue">
-            <span class="subj-icon">💙</span>
-            <span class="subj-name">ชุดวัฒนธรรมจีน</span>
-          </td>
-
-          <td class="subject math">
-            <span class="subj-icon">🔢</span>
-            <span class="subj-name">คณิตศาสตร์</span>
-            <span class="subj-teacher">ครูฐิตาภรณ์</span>
-          </td>
-          <td class="subject social">
-            <span class="subj-icon">🌏</span>
-            <span class="subj-name">สังคมศึกษา</span>
-            <span class="subj-teacher">ครูฐิตาภรณ์</span>
-          </td>
-          <td class="subject science">
-            <span class="subj-icon">🔬</span>
-            <span class="subj-name">วิทยาศาสตร์</span>
-            <span class="subj-teacher">ครูจุฬาลักษณ์</span>
-          </td>
-          <td class="subject english">
-            <span class="subj-icon">🗣️</span>
-            <span class="subj-name">ภาษาอังกฤษ</span>
-            <span class="subj-teacher">ครูพรพนา</span>
-          </td>
-          <td class="subject thai">
-            <span class="subj-icon">📖</span>
-            <span class="subj-name">ภาษาไทย</span>
-            <span class="subj-teacher">ครูฐิตาภรณ์</span>
-          </td>
-          <td class="subject guide">
-            <span class="subj-icon">🧭</span>
-            <span class="subj-name">แนะแนว</span>
-          </td>
-          <td class="subject plc">
-            <span class="subj-icon">👩‍🏫</span>
-            <span class="subj-name">PLC</span>
-          </td>
-        </tr>
-
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Note -->
-  <div class="note">
-    <strong>หมายเหตุ:</strong> วิชาหน้าที่พลเมืองเป็นรายวิชาเพิ่มเติม จัดการเรียนการสอนโดยบูรณาการลงสู่กิจกรรมที่โรงเรียนดำเนินการอยู่แล้ว (กิจกรรมหน้าเสาธง, กีฬาสี, กิจกรรมประเพณี วันสำคัญต่างๆ, ลูกเสือ - ยุวกาชาด)
-  </div>
-
-  <!-- Footer names -->
-  <div class="footer-names">
-    <div>
-      <div class="footer-line"></div>
-      <div class="name">( นางเยาวมาลย์  พุดยาภรณ์ )</div>
-      <div class="role">รองผู้อำนวยการโรงเรียน</div>
+    <!-- Header -->
+    <div class="header">
+      <div class="school-name">โรงเรียนหนองจอกกงลิบฮัวเคียว</div>
+      <div class="school-sub">ตารางเรียนภาคเรียนที่ 1 ปีการศึกษา 2569</div>
+      <div class="school-sub">ระดับชั้นประถมศึกษาปีที่ 2 &nbsp;|&nbsp; ครูประจำชั้น: <strong>ครูฐิตาภรณ์ สุดาร</strong></div>
     </div>
-    <div>
-      <div class="footer-line"></div>
-      <div class="name">( นายปรีชา  รอดมณี )</div>
-      <div class="role">ผู้อำนวยการโรงเรียน</div>
-    </div>
-  </div>
 
+    <!-- Table -->
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th rowspan="2" style="font-size:1rem; width: 90px;">📅<br>วัน/เวลา</th>
+            <th rowspan="2" class="dress-header">👕<br>การแต่งกาย</th>
+            <th rowspan="2" class="assembly-header">🇹🇭<br>กิจกรรม<span class="time-text">07:50–08:40</span></th>
+            <th colspan="2">⏰ เช้า</th>
+            <th rowspan="2" class="break-header">พัก<br>10<br>นาที</th>
+            <th colspan="1">☀️ สาย</th>
+            <th rowspan="2" class="lunch-header">🍱<br>พักกลางวัน<span class="time-text">11:20–12:10</span></th>
+            <th colspan="1">🌤️ บ่าย</th>
+            <th rowspan="2" class="break-header">พัก<br>10<br>นาที</th>
+            <th colspan="1">🌤️ บ่าย</th>
+            <th rowspan="2" class="break-header">พัก<br>10<br>นาที</th>
+            <th colspan="2">🌤️ บ่าย</th>
+          </tr>
+          <tr>
+            <th>08:40–09:30</th>
+            <th>09:30–10:20</th>
+            <th>10:30–11:20</th>
+            <th>12:10–13:00</th>
+            <th>13:10–14:00</th>
+            <th>14:10–15:00</th>
+            <th>15:00–16:00</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- วันจันทร์ -->
+          <tr>
+            <td class="day-cell">
+              <span class="day-emoji">🌙</span>
+              วันจันทร์
+            </td>
+            
+            <td class="subject dress-yellow">
+              <span class="subj-icon">💛</span>
+              <span class="subj-name">ชุดนักเรียน</span>
+            </td>
+
+            <td rowspan="5" class="vertical-merge assembly-col">
+              <div class="v-wrapper"><span class="v-text">กิจกรรมหน้าเสาธง BBL ส่งเสริมการอ่าน</span></div>
+            </td>
+            
+            <td class="subject math">
+              <span class="subj-icon">🔢</span>
+              <span class="subj-name">คณิตศาสตร์</span>
+              <span class="subj-teacher">ครูฐิตาภรณ์</span>
+            </td>
+            <td class="subject art">
+              <span class="subj-icon">🎵</span>
+              <span class="subj-name">ดนตรี/ศิลปะ</span>
+              <span class="subj-teacher">ครูภัทรียา</span>
+            </td>
+            
+            <td rowspan="5" class="vertical-merge break-col">
+              <div class="v-wrapper"><span class="v-text">พัก 10 นาที</span></div>
+            </td>
+
+            <td class="subject english">
+              <span class="subj-icon">🗣️</span>
+              <span class="subj-name">ภาษาอังกฤษ</span>
+              <span class="subj-teacher">T.Myra</span>
+            </td>
+            
+            <td rowspan="5" class="vertical-merge lunch-col">
+              <div class="v-wrapper"><span class="v-text">พักรับประทานอาหารกลางวัน</span></div>
+            </td>
+
+            <td class="subject chinese">
+              <span class="subj-icon">🈳</span>
+              <span class="subj-name">ภาษาจีน</span>
+              <span class="subj-teacher">ครูอารียา</span>
+            </td>
+            
+            <td rowspan="5" class="vertical-merge break-col">
+              <div class="v-wrapper"><span class="v-text">พัก 10 นาที</span></div>
+            </td>
+
+            <td class="subject career">
+              <span class="subj-icon">🔨</span>
+              <span class="subj-name">การงานอาชีพ</span>
+              <span class="subj-teacher">ครูกนกวรรณ</span>
+            </td>
+
+            <td rowspan="5" class="vertical-merge break-col">
+              <div class="v-wrapper"><span class="v-text">พัก 10 นาที</span></div>
+            </td>
+
+            <td class="subject thai">
+              <span class="subj-icon">📖</span>
+              <span class="subj-name">ภาษาไทย</span>
+              <span class="subj-teacher">ครูฐิตาภรณ์</span>
+            </td>
+            <td class="subject supple">
+              <span class="subj-icon">🌟</span>
+              <span class="subj-name">สอนเสริม</span>
+            </td>
+          </tr>
+
+          <!-- วันอังคาร -->
+          <tr>
+            <td class="day-cell">
+              <span class="day-emoji">🔴</span>
+              วันอังคาร
+            </td>
+
+            <td class="subject dress-pink">
+              <span class="subj-icon">💗</span>
+              <span class="subj-name">ชุดนักเรียน</span>
+            </td>
+
+            <td class="subject math">
+              <span class="subj-icon">🔢</span>
+              <span class="subj-name">คณิตศาสตร์</span>
+              <span class="subj-teacher">ครูฐิตาภรณ์</span>
+            </td>
+            <td class="subject english">
+              <span class="subj-icon">🗣️</span>
+              <span class="subj-name">ภาษาอังกฤษ</span>
+              <span class="subj-teacher">ครูพรพนา</span>
+            </td>
+            <td class="subject thai">
+              <span class="subj-icon">📖</span>
+              <span class="subj-name">ภาษาไทย</span>
+              <span class="subj-teacher">ครูฐิตาภรณ์</span>
+            </td>
+            <td class="subject history">
+              <span class="subj-icon">🏛️</span>
+              <span class="subj-name">ประวัติศาสตร์</span>
+              <span class="subj-teacher">ครูฐิตาภรณ์</span>
+            </td>
+            <td class="subject art">
+              <span class="subj-icon">💃</span>
+              <span class="subj-name">นาฏศิลป์/ศิลปะ</span>
+              <span class="subj-teacher">ครูภัทรียา</span>
+            </td>
+            <td class="subject computer">
+              <span class="subj-icon">💻</span>
+              <span class="subj-name">คอมพิวเตอร์</span>
+              <span class="subj-teacher">ครูจุฬาลักษณ์</span>
+            </td>
+            <td class="subject supple">
+              <span class="subj-icon">🌟</span>
+              <span class="subj-name">สอนเสริม</span>
+            </td>
+          </tr>
+
+          <!-- วันพุธ -->
+          <tr>
+            <td class="day-cell">
+              <span class="day-emoji">💚</span>
+              วันพุธ
+            </td>
+
+            <td class="subject dress-green">
+              <span class="subj-icon">💚</span>
+              <span class="subj-name">ชุดลูกเสือ<br>ยุวกาชาด</span>
+            </td>
+
+            <td class="subject math">
+              <span class="subj-icon">🔢</span>
+              <span class="subj-name">คณิตศาสตร์</span>
+              <span class="subj-teacher">ครูฐิตาภรณ์</span>
+            </td>
+            <td class="subject thai">
+              <span class="subj-icon">📖</span>
+              <span class="subj-name">ภาษาไทย</span>
+              <span class="subj-teacher">ครูฐิตาภรณ์</span>
+            </td>
+            <td class="subject english">
+              <span class="subj-icon">💬</span>
+              <span class="subj-name">เสริมอังกฤษ</span>
+              <span class="subj-teacher">ครูสายพิณ</span>
+            </td>
+            <td class="subject scout">
+              <span class="subj-icon">⚜️</span>
+              <span class="subj-name">ลูกเสือ</span>
+              <span class="subj-teacher">ยุวกาชาด</span>
+            </td>
+            <td class="subject social">
+              <span class="subj-icon">🌏</span>
+              <span class="subj-name">สังคมศึกษา</span>
+              <span class="subj-teacher">ครูฐิตาภรณ์</span>
+            </td>
+            <td class="subject pe">
+              <span class="subj-icon">🩺</span>
+              <span class="subj-name">สุขศึกษา</span>
+              <span class="subj-teacher">ครูภัทรียา</span>
+            </td>
+            <td class="subject plc">
+              <span class="subj-icon">👩‍🏫</span>
+              <span class="subj-name">PLC</span>
+            </td>
+          </tr>
+
+          <!-- วันพฤหัส -->
+          <tr>
+            <td class="day-cell">
+              <span class="day-emoji">🟠</span>
+              วันพฤหัส
+            </td>
+
+            <td class="subject dress-orange">
+              <span class="subj-icon">🧡</span>
+              <span class="subj-name">ชุดพละ<br>สีเหลือง</span>
+            </td>
+
+            <td class="subject math">
+              <span class="subj-icon">🔢</span>
+              <span class="subj-name">คณิตศาสตร์</span>
+              <span class="subj-teacher">ครูฐิตาภรณ์</span>
+            </td>
+            <td class="subject chinese">
+              <span class="subj-icon">🈳</span>
+              <span class="subj-name">ภาษาจีน</span>
+              <span class="subj-teacher">ครูอารียา</span>
+            </td>
+            <td class="subject science">
+              <span class="subj-icon">🔬</span>
+              <span class="subj-name">วิทยาศาสตร์</span>
+              <span class="subj-teacher">ครูฐิตาภรณ์</span>
+            </td>
+            <td class="subject pe">
+              <span class="subj-icon">🏃</span>
+              <span class="subj-name">พละศึกษา</span>
+              <span class="subj-teacher">ครูเจษฎา</span>
+            </td>
+            <td class="subject activity">
+              <span class="subj-icon">🎭</span>
+              <span class="subj-name">ชมรม</span>
+            </td>
+            <td class="subject english">
+              <span class="subj-icon">💬</span>
+              <span class="subj-name">เสริมอังกฤษ</span>
+              <span class="subj-teacher">ครูสายพิณ</span>
+            </td>
+            <td class="subject thai">
+              <span class="subj-icon">📖</span>
+              <span class="subj-name">ภาษาไทย</span>
+              <span class="subj-teacher">ครูฐิตาภรณ์</span>
+            </td>
+          </tr>
+
+          <!-- วันศุกร์ -->
+          <tr>
+            <td class="day-cell">
+              <span class="day-emoji">🎉</span>
+              วันศุกร์
+            </td>
+
+            <td class="subject dress-blue">
+              <span class="subj-icon">💙</span>
+              <span class="subj-name">ชุดวัฒนธรรมจีน</span>
+            </td>
+
+            <td class="subject math">
+              <span class="subj-icon">🔢</span>
+              <span class="subj-name">คณิตศาสตร์</span>
+              <span class="subj-teacher">ครูฐิตาภรณ์</span>
+            </td>
+            <td class="subject social">
+              <span class="subj-icon">🌏</span>
+              <span class="subj-name">สังคมศึกษา</span>
+              <span class="subj-teacher">ครูฐิตาภรณ์</span>
+            </td>
+            <td class="subject science">
+              <span class="subj-icon">🔬</span>
+              <span class="subj-name">วิทยาศาสตร์</span>
+              <span class="subj-teacher">ครูจุฬาลักษณ์</span>
+            </td>
+            <td class="subject english">
+              <span class="subj-icon">🗣️</span>
+              <span class="subj-name">ภาษาอังกฤษ</span>
+              <span class="subj-teacher">ครูพรพนา</span>
+            </td>
+            <td class="subject thai">
+              <span class="subj-icon">📖</span>
+              <span class="subj-name">ภาษาไทย</span>
+              <span class="subj-teacher">ครูฐิตาภรณ์</span>
+            </td>
+            <td class="subject guide">
+              <span class="subj-icon">🧭</span>
+              <span class="subj-name">แนะแนว</span>
+            </td>
+            <td class="subject plc">
+              <span class="subj-icon">👩‍🏫</span>
+              <span class="subj-name">PLC</span>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Note -->
+    <div class="note">
+      <strong>หมายเหตุ:</strong> วิชาหน้าที่พลเมืองเป็นรายวิชาเพิ่มเติม จัดการเรียนการสอนโดยบูรณาการลงสู่กิจกรรมที่โรงเรียนดำเนินการอยู่แล้ว (กิจกรรมหน้าเสาธง, กีฬาสี, กิจกรรมประเพณี วันสำคัญต่างๆ, ลูกเสือ - ยุวกาชาด)
+    </div>
+
+    <!-- Footer names -->
+    <div class="footer-names">
+      <div>
+        <div class="footer-line"></div>
+        <div class="name">( นางเยาวมาลย์  พุดยาภรณ์ )</div>
+        <div class="role">รองผู้อำนวยการโรงเรียน</div>
+      </div>
+      <div>
+        <div class="footer-line"></div>
+        <div class="name">( นายปรีชา  รอดมณี )</div>
+        <div class="role">ผู้อำนวยการโรงเรียน</div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <!-- Download Button Container -->
@@ -640,31 +648,54 @@
     btn.innerHTML = "⏳ กำลังสร้างรูปภาพ...";
     btn.disabled = true;
 
-    // เลื่อนหน้าจอกลับไปด้านบนสุดก่อนทำการแคปเจอร์
+    // ส่วนประกอบที่เราจะจัดการเพื่อให้แคปเจอร์ภาพได้เต็มๆบนมือถือ
+    const captureArea = document.getElementById('captureArea');
+    const tableContainer = document.querySelector('.table-container');
+
+    // เลื่อนหน้าจอกลับไปด้านบนสุดก่อน
     window.scrollTo(0, 0);
 
+    // เก็บค่า CSS เดิมเอาไว้
+    const origCaptureWidth = captureArea.style.width;
+    const origTableOverflow = tableContainer.style.overflowX;
+
+    // บังคับขยายความกว้างเพื่อไม่ให้โดนตัดขอบในจอมือถือ 
+    // (ตารางเรากว้างประมาณ 1350px + padding รอบนอก)
+    captureArea.style.width = '1500px'; 
+    tableContainer.style.overflowX = 'visible';
+
+    // หน่วงเวลาเล็กน้อยเพื่อให้เบราว์เซอร์จัด Layout ใหม่ให้เสร็จก่อน
     setTimeout(() => {
-      html2canvas(document.body, {
-        scale: 2, 
+      html2canvas(captureArea, {
+        scale: 3, // 🌟 ปรับเพิ่มเป็น 3 เพื่อให้ภาพมีความละเอียด (Resolution) สูงขึ้นและคมชัดเมื่อซูม
         useCORS: true,
-        backgroundColor: '#e8f5e9'
+        backgroundColor: null
       }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'ตารางเรียน_ป2.png';
-        link.href = canvas.toDataURL('image/png');
+        link.href = canvas.toDataURL('image/png', 1.0); // 🌟 บังคับคุณภาพ (Quality) สูงสุด
         link.click();
 
+        // คืนค่า CSS ให้กลับมาเป็นแบบ Responsive เพื่อให้ใช้งานบนมือถือได้ปกติ
+        captureArea.style.width = origCaptureWidth;
+        tableContainer.style.overflowX = origTableOverflow;
+        
         btn.innerHTML = originalText;
         btn.disabled = false;
       }).catch(err => {
         console.error("Error generating image: ", err);
+        
+        // คืนค่า CSS แม้จะเกิด error
+        captureArea.style.width = origCaptureWidth;
+        tableContainer.style.overflowX = origTableOverflow;
+
         btn.innerHTML = "❌ เกิดข้อผิดพลาด";
         setTimeout(() => {
           btn.innerHTML = originalText;
           btn.disabled = false;
         }, 2000);
       });
-    }, 500); // เพิ่มเวลาหน่วงเล็กน้อยเพื่อให้แน่ใจว่าฟอนต์และสไตล์ประมวลผลเสร็จแล้วก่อนแคป
+    }, 400); 
   });
 </script>
 </body>
