@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ตารางเรียน ป.2</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700;800&display=swap" rel="stylesheet">
+<!-- เพิ่ม Library html2canvas สำหรับแปลง HTML เป็นรูปภาพ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root {
+    --math:     #FF6B9D;
+    --thai:     #FFB347;
+    --english:  #5BC8F5;
+    --science:  #7ED957;
+    --social:   #C77DFF;
+    --chinese:  #FF7B54;
+    --art:      #FF9EBC;
+    --pe:       #56CFE1;
+    --computer: #A29BFE;
+    --career:   #FDBF60;
+    --history:  #E07BE0;
+    --scout:    #74D680;
+    --plc:      #B0BEC5;
+    --other:    #FFD166;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Kanit', sans-serif;
+    background-color: #f4f7f6;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Container สำหรับจัดกลุ่มเพื่อ Capture เป็นรูปภาพ */
+  #capture-area {
+    background: linear-gradient(135deg, #fce4ec 0%, #e8f5e9 25%, #e3f2fd 50%, #fff9c4 75%, #f3e5f5 100%);
+    padding: 40px;
+    border-radius: 30px;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 1380px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  }
+
+  /* Floating stars background */
+  #capture-area::before {
+    content: '⭐ ✨ 🌟 ⭐ ✨ 🌟 ⭐ ✨ 🌟 ⭐ ✨ 🌟';
+    position: absolute;
+    top: -10px; left: 0; right: 0;
+    font-size: 22px;
+    letter-spacing: 40px;
+    opacity: 0.25;
+    animation: floatStars 8s linear infinite;
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  @keyframes floatStars {
+    from { transform: translateY(-20px); }
+    to   { transform: translateY(100vh); }
+  }
+
+  .wrapper {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ปุ่มดาวน์โหลดรูปภาพ */
+  .download-btn {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #6c63ff, #a29bfe);
+    color: white;
+    border: none;
+    padding: 18px 40px;
+    font-size: 1.2rem;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(108, 99, 255, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .download-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(108, 99, 255, 0.6);
+  }
+  .download-btn:active {
+    transform: translateY(1px);
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #ff6fb7, #ff9a3c, #ffe066, #5bc8f5, #a29bfe);
+    background-size: 300% 300%;
+    animation: rainbowShift 5s ease infinite;
+    border-radius: 28px;
+    padding: 22px 30px 18px;
+    text-align: center;
+    margin-bottom: 18px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15), 0 0 0 4px white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @keyframes rainbowShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .header::before, .header::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+  }
+  .header::before { width: 120px; height: 120px; top: -40px; left: -30px; }
+  .header::after  { width: 80px; height: 80px; bottom: -20px; right: 30px; }
+
+  .school-name {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+    letter-spacing: 1px;
+  }
+
+  .school-sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.95);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  /* Table container */
+  .table-container {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+    overflow: hidden;
+    border: 3px solid white;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1100px;
+  }
+
+  /* Header row */
+  thead tr th {
+    background: linear-gradient(135deg, #6c63ff, #a29bfe);
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 10px 6px;
+    text-align: center;
+    border: 2px solid rgba(255,255,255,0.3);
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+  }
+
+  thead tr:first-child th:first-child {
+    background: linear-gradient(135deg, #ff6fb7, #ff9a3c);
+    font-size: 0.95rem;
+  }
+
+  /* Time sub-row */
+  thead tr:last-child th {
+    background: linear-gradient(135deg, #e8d5ff, #d5efff);
+    color: #6c63ff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 6px 4px;
+    border: 1px solid rgba(108,99,255,0.15);
+  }
+
+  /* Specific Header styles */
+  th.break-header { background: linear-gradient(135deg, #e0e0e0, #f5f5f5); color: #616161; width: 55px; min-width: 55px; }
+  th.lunch-header { background: linear-gradient(135deg, #ffe566, #ffd700); color: #7a6000; width: 60px; min-width: 60px; }
+  th.assembly-header { background: linear-gradient(135deg, #ffb74d, #ff9800); color: white; width: 60px; min-width: 60px; }
+
+  /* Day cells */
+  .day-cell {
+    background: linear-gradient(180deg, #fff3f9, #ffe8f5);
+    font-weight: 800;
+    font-size: 0.95rem;
+    text-align: center;
+    padding: 8px 10px;
+    border: 2px solid rgba(255,182,193,0.4);
+    color: #d63384;
+    min-width: 80px;
+    vertical-align: middle;
+    line-height: 1.4;
+  }
+
+  .day-emoji { font-size: 1.3rem; display: block; }
+
+  /* Subject cells */
+  td.subject {
+    padding: 6px 5px;
+    text-align: center;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border: 2px solid rgba(255,255,255,0.8);
+    vertical-align: middle;
+    line-height: 1.3;
+    transition: transform 0.15s, box-shadow 0.15s;
+    cursor: default;
+    border-radius: 4px;
+    position: relative;
+    width: auto;
+  }
+
+  td.subject:hover {
+    transform: scale(1.08);
+    z-index: 10;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    border-radius: 8px;
+  }
+
+  .subj-name  { font-weight: 800; font-size: 0.82rem; display: block; }
+  .subj-teacher { font-size: 0.66rem; opacity: 0.85; display: block; margin-top: 2px; }
+  .subj-icon  { font-size: 1.2rem; display: block; margin-bottom: 2px; }
+
+  /* แก้ไข: การจัดคอลัมน์แนวตั้งแบบใหม่ (แก้ปัญหา html2canvas เรนเดอร์ฟอนต์เพี้ยน) */
+  td.vertical-merge {
+    position: relative; /* ใช้ Position แทน Writing-mode */
+    text-align: center;
+    vertical-align: middle;
+    border: 2px solid rgba(255,255,255,0.8);
+    border-radius: 4px;
+    padding: 0;
+  }
+
+  /* กล่องเก็บข้อความแนวตั้ง */
+  .vertical-text-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    white-space: nowrap;
+    font-weight: 800;
+    letter-spacing: 1px;
+    display: inline-block;
+  }
+
+  .assembly-col { background: linear-gradient(180deg, #ffe0b2, #ffcc80); color: #e65100; }
+  .break-col { background: linear-gradient(180deg, #f5f5f5, #e0e0e0); color: #616161; }
+  .lunch-col { background: linear-gradient(180deg, #fff9b0, #ffe566); color: #7a6000; }
+
+  /* ขนาดฟอนต์แยกตามคอลัมน์พิเศษ */
+  .assembly-col .vertical-text-box { font-size: 0.95rem; }
+  .break-col .vertical-text-box { font-size: 0.85rem; }
+  .lunch-col .vertical-text-box { font-size: 0.95rem; letter-spacing: 2px; }
+
+  /* Subject colours */
+  .math     { background: linear-gradient(135deg, #ffb3d1, #ff6b9d22); color: #a8004e; }
+  .thai     { background: linear-gradient(135deg, #ffd9a0, #ffb34722); color: #7a4200; }
+  .english  { background: linear-gradient(135deg, #a8e6ff, #5bc8f522); color: #005f8a; }
+  .science  { background: linear-gradient(135deg, #b8f5a0, #7ed95722); color: #2d6a00; }
+  .social   { background: linear-gradient(135deg, #dbb8ff, #c77dff22); color: #5a00a8; }
+  .chinese  { background: linear-gradient(135deg, #ffbfa8, #ff7b5422); color: #8a2a00; }
+  .art      { background: linear-gradient(135deg, #ffc4d8, #ff9ebc22); color: #8a003a; }
+  .pe       { background: linear-gradient(135deg, #a8f0f8, #56cfe122); color: #005a7a; }
+  .computer { background: linear-gradient(135deg, #c8c0ff, #a29bfe22); color: #3a2a8a; }
+  .career   { background: linear-gradient(135deg, #ffe5a0, #fdbf6022); color: #7a4a00; }
+  .history  { background: linear-gradient(135deg, #f0b8f0, #e07be022); color: #6a006a; }
+  .scout    { background: linear-gradient(135deg, #b0f0b8, #74d68022); color: #1a5a25; }
+  .guide    { background: linear-gradient(135deg, #ffe0b2, #ffcc8022); color: #6a3500; }
+  .plc      { background: linear-gradient(135deg, #dde3e8, #b0bec522); color: #37474f; }
+  .activity { background: linear-gradient(135deg, #b8e8ff, #82cfff22); color: #00426a; }
+  .supple   { background: linear-gradient(135deg, #ffe8d0, #ffd3a022); color: #6a3800; }
+
+  /* Note section */
+  .note {
+    margin-top: 16px;
+    background: white;
+    border-radius: 16px;
+    padding: 14px 20px;
+    font-size: 0.8rem;
+    color: #555;
+    border-left: 5px solid #ff6fb7;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    line-height: 1.6;
+    font-weight: 600;
+  }
+
+  .footer-names {
+    margin-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    background: white;
+    border-radius: 16px;
+    padding: 16px 30px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    font-size: 0.82rem;
+    color: #555;
+    font-weight: 600;
+  }
+
+  .footer-names div { text-align: center; }
+  .footer-names .name { font-weight: 800; color: #333; font-size: 0.95rem; margin-bottom: 4px;}
+  .footer-names .role { color: #888; font-size: 0.8rem; }
+  .footer-line { border-top: 1px solid #ccc; width: 150px; margin: 0 auto 8px auto; }
+
+</style>
+</head>
+<body>
+
+<!-- เริ่มต้นส่วนที่จะถูกแปลงเป็นรูปภาพ -->
+<div id="capture-area">
+  <div class="wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="school-name">โรงเรียนหนองจอกกงลิบฮัวเคียว</div>
+    <div class="school-sub">ตารางเรียนภาคเรียนที่ 1 ปีการศึกษา 2569</div>
+    <div class="school-sub">ระดับชั้นประถมศึกษาปีที่ 2 &nbsp;|&nbsp; ครูประจำชั้น: <strong>ครูฐิตาภรณ์ สุดาร</strong></div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th rowspan="2" style="font-size:1rem; width: 90px;">📅<br>วัน/เวลา</th>
+          <th rowspan="2" class="assembly-header">🇹🇭<br>กิจกรรม<br><span style="font-size:0.65rem; font-weight:normal;">07:50–08:40</span></th>
+          <th colspan="2">⏰ เช้า</th>
+          <th rowspan="2" class="break-header">พัก<br>10<br>นาที</th>
+          <th colspan="1">☀️ สาย</th>
+          <th rowspan="2" class="lunch-header">🍱<br>พักกลางวัน<br><span style="font-size:0.65rem; font-weight:normal;">11:20–12:10</span></th>
+          <th colspan="1">🌤️ บ่าย</th>
+          <th rowspan="2" class="break-header">พัก<br>10<br>นาที</th>
+          <th colspan="1">🌤️ บ่าย</th>
+          <th rowspan="2" class="break-header">พัก<br>10<br>นาที</th>
+          <th colspan="2">🌤️ บ่าย</th>
+        </tr>
+        <tr>
+          <th style="width: 95px;">08:40–09:30</th>
+          <th style="width: 95px;">09:30–10:20</th>
+          <th style="width: 95px;">10:30–11:20</th>
+          <th style="width: 95px;">12:10–13:00</th>
+          <th style="width: 95px;">13:10–14:00</th>
+          <th style="width: 95px;">14:10–15:00</th>
+          <th style="width: 95px;">15:00–16:00</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- วันจันทร์ -->
+        <tr>
+          <td class="day-cell">
+            <span class="day-emoji">🌙</span>
+            วันจันทร์
+          </td>
+          <!-- เปลี่ยนมาใช้ div.vertical-text-box แทน -->
+          <td rowspan="5" class="vertical-merge assembly-col">
+            <div class="vertical-text-box">กิจกรรมหน้าเสาธง BBL ส่งเสริมการอ่าน</div>
+          </td>
+          
+          <td class="subject math">
+            <span class="subj-icon">🔢</span>
+            <span class="subj-name">คณิตศาสตร์</span>
+            <span class="subj-teacher">ครูฐิตาภรณ์</span>
+          </td>
+          <td class="subject art">
+            <span class="subj-icon">🎵</span>
+            <span class="subj-name">ดนตรี/ศิลปะ</span>
+            <span class="subj-teacher">ครูภัทรียา</span>
+          </td>
+          
+          <td rowspan="5" class="vertical-merge break-col">
+            <div class="vertical-text-box">พัก 10 นาที</div>
+          </td>
+
+          <td class="subject english">
+            <span class="subj-icon">🗣️</span>
+            <span class="subj-name">ภาษาอังกฤษ</span>
+            <span class="subj-teacher">T.Myra</span>
+          </td>
+          
+          <td rowspan="5" class="vertical-merge lunch-col">
+            <div class="vertical-text-box">พักรับประทานอาหารกลางวัน</div>
+          </td>
+
+          <td class="subject chinese">
+            <span class="subj-icon">🈳</span>
+            <span class="subj-name">ภาษาจีน</span>
+            <span class="subj-teacher">ครูอารียา</span>
+          </td>
+
+          <td rowspan="5" class="vertical-merge break-col">
+            <div class="vertical-text-box">พัก 10 นาที</div>
+          </td>
+
+          <td class="subject career">
+            <span class="subj-icon">🔨</span>
+            <span class="subj-name">การงานอาชีพ</span>
+            <span class="subj-teacher">ครูกนกวรรณ</span>
+          </td>
+
+          <td rowspan="5" class="vertical-merge break-col">
+            <div class="vertical-text-box">พัก 10 นาที</div>
+          </td>
+
+          <td class="subject thai">
+            <span class="subj-icon">📖</span>
+            <span class="subj-name">ภาษาไทย</span>
+            <span class="subj-teacher">ครูฐิตาภรณ์</span>
+          </td>
+          <td class="subject supple">
+            <span class="subj-icon">🌟</span>
+            <span class="subj-name">สอนเสริม</span>
+          </td>
+        </tr>
+
+        <!-- วันอังคาร -->
+        <tr>
+          <td class="day-cell">
+            <span class="day-emoji">🔴</span>
+            วันอังคาร
+          </td>
+          <td class="subject math">
+            <span class="subj-icon">🔢</span>
+            <span class="subj-name">คณิตศาสตร์</span>
+            <span class="subj-teacher">ครูฐิตาภรณ์</span>
+          </td>
+          <td class="subject english">
+            <span class="subj-icon">🗣️</span>
+            <span class="subj-name">ภาษาอังกฤษ</span>
+            <span class="subj-teacher">ครูพรพนา</span>
+          </td>
+          <td class="subject thai">
+            <span class="subj-icon">📖</span>
+            <span class="subj-name">ภาษาไทย</span>
+            <span class="subj-teacher">ครูฐิตาภรณ์</span>
+          </td>
+          <td class="subject history">
+            <span class="subj-icon">🏛️</span>
+            <span class="subj-name">ประวัติศาสตร์</span>
+            <span class="subj-teacher">ครูฐิตาภรณ์</span>
+          </td>
+          <td class="subject art">
+            <span class="subj-icon">💃</span>
+            <span class="subj-name">นาฏศิลป์/ศิลปะ</span>
+            <span class="subj-teacher">ครูภัทรียา</span>
+          </td>
+          <td class="subject computer">
+            <span class="subj-icon">💻</span>
+            <span class="subj-name">คอมพิวเตอร์</span>
+            <span class="subj-teacher">ครูจุฬาลักษณ์</span>
+          </td>
+          <td class="subject supple">
+            <span class="subj-icon">🌟</span>
+            <span class="subj-name">สอนเสริม</span>
+          </td>
+        </tr>
+
+        <!-- วันพุธ -->
+        <tr>
+          <td class="day-cell">
+            <span class="day-emoji">💚</span>
+            วันพุธ
+          </td>
+          <td class="subject math">
+            <span class="subj-icon">🔢</span>
+            <span class="subj-name">คณิตศาสตร์</span>
+            <span class="subj-teacher">ครูฐิตาภรณ์</span>
+          </td>
+          <td class="subject thai">
+            <span class="subj-icon">📖</span>
+            <span class="subj-name">ภาษาไทย</span>
+            <span class="subj-teacher">ครูฐิตาภรณ์</span>
+          </td>
+          <td class="subject english">
+            <span class="subj-icon">💬</span>
+            <span class="subj-name">เสริมอังกฤษ</span>
+            <span class="subj-teacher">ครูสายพิณ</span>
+          </td>
+          <td class="subject scout">
+            <span class="subj-icon">⚜️</span>
+            <span class="subj-name">ลูกเสือ</span>
+            <span class="subj-teacher">ยุวกาชาด</span>
+          </td>
+          <td class="subject social">
+            <span class="subj-icon">🌏</span>
+            <span class="subj-name">สังคมศึกษา</span>
+            <span class="subj-teacher">ครูฐิตาภรณ์</span>
+          </td>
+          <td class="subject pe">
+            <span class="subj-icon">🩺</span>
+            <span class="subj-name">สุขศึกษา</span>
+            <span class="subj-teacher">ครูภัทรียา</span>
+          </td>
+          <td class="subject plc">
+            <span class="subj-icon">👩‍🏫</span>
+            <span class="subj-name">PLC</span>
+          </td>
+        </tr>
+
+        <!-- วันพฤหัส -->
+        <tr>
+          <td class="day-cell">
+            <span class="day-emoji">🟠</span>
+            วันพฤหัส
+          </td>
+          <td class="subject math">
+            <span class="subj-icon">🔢</span>
+            <span class="subj-name">คณิตศาสตร์</span>
+            <span class="subj-teacher">ครูฐิตาภรณ์</span>
+          </td>
+          <td class="subject chinese">
+            <span class="subj-icon">🈳</span>
+            <span class="subj-name">ภาษาจีน</span>
+            <span class="subj-teacher">ครูอารียา</span>
+          </td>
+          <td class="subject science">
+            <span class="subj-icon">🔬</span>
+            <span class="subj-name">วิทยาศาสตร์</span>
+            <span class="subj-teacher">ครูฐิตาภรณ์</span>
+          </td>
+          <td class="subject pe">
+            <span class="subj-icon">🏃</span>
+            <span class="subj-name">พละศึกษา</span>
+            <span class="subj-teacher">ครูเจษฎา</span>
+          </td>
+          <td class="subject activity">
+            <span class="subj-icon">🎭</span>
+            <span class="subj-name">ชมรม</span>
+          </td>
+          <td class="subject english">
+            <span class="subj-icon">💬</span>
+            <span class="subj-name">เสริมอังกฤษ</span>
+            <span class="subj-teacher">ครูสายพิณ</span>
+          </td>
+          <td class="subject thai">
+            <span class="subj-icon">📖</span>
+            <span class="subj-name">ภาษาไทย</span>
+            <span class="subj-teacher">ครูฐิตาภรณ์</span>
+          </td>
+        </tr>
+
+        <!-- วันศุกร์ -->
+        <tr>
+          <td class="day-cell">
+            <span class="day-emoji">🎉</span>
+            วันศุกร์
+          </td>
+          <td class="subject math">
+            <span class="subj-icon">🔢</span>
+            <span class="subj-name">คณิตศาสตร์</span>
+            <span class="subj-teacher">ครูฐิตาภรณ์</span>
+          </td>
+          <td class="subject social">
+            <span class="subj-icon">🌏</span>
+            <span class="subj-name">สังคมศึกษา</span>
+            <span class="subj-teacher">ครูฐิตาภรณ์</span>
+          </td>
+          <td class="subject science">
+            <span class="subj-icon">🔬</span>
+            <span class="subj-name">วิทยาศาสตร์</span>
+            <span class="subj-teacher">ครูจุฬาลักษณ์</span>
+          </td>
+          <td class="subject english">
+            <span class="subj-icon">🗣️</span>
+            <span class="subj-name">ภาษาอังกฤษ</span>
+            <span class="subj-teacher">ครูพรพนา</span>
+          </td>
+          <td class="subject thai">
+            <span class="subj-icon">📖</span>
+            <span class="subj-name">ภาษาไทย</span>
+            <span class="subj-teacher">ครูฐิตาภรณ์</span>
+          </td>
+          <td class="subject guide">
+            <span class="subj-icon">🧭</span>
+            <span class="subj-name">แนะแนว</span>
+          </td>
+          <td class="subject plc">
+            <span class="subj-icon">👩‍🏫</span>
+            <span class="subj-name">PLC</span>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Note -->
+  
+
+  <!-- Footer names -->
+  <div class="footer-names">
+    <div>
+      <div class="footer-line"></div>
+      <div class="name">( นางเยาวมาลย์  พุดยาภรณ์ )</div>
+      <div class="role">รองผู้อำนวยการโรงเรียน</div>
+    </div>
+    <div>
+      <div class="footer-line"></div>
+      <div class="name">( นายปรีชา  รอดมณี )</div>
+      <div class="role">ผู้อำนวยการโรงเรียน</div>
+    </div>
+  </div>
+
+  </div>
+</div>
+<!-- สิ้นสุดส่วนที่จะถูกแปลงเป็นรูปภาพ -->
+
+<!-- ปุ่มกดเพื่อดาวน์โหลด -->
+<button class="download-btn" onclick="downloadTable()">
+  📸 บันทึกตารางเรียนเป็นรูปภาพความละเอียดสูง
+</button>
+
+<script>
+  function downloadTable() {
+    const btn = document.querySelector('.download-btn');
+    const originalText = btn.innerHTML;
+    
+    // เปลี่ยนข้อความปุ่มระหว่างรอ
+    btn.innerHTML = '⏳ กำลังสร้างรูปภาพ กรุณารอสักครู่...';
+    btn.style.opacity = '0.7';
+    btn.style.cursor = 'wait';
+
+    const captureArea = document.getElementById('capture-area');
+
+    // เพิ่มความคมชัด Scale = 4 (400% DPI)
+    html2canvas(captureArea, {
+      scale: 4, 
+      backgroundColor: '#ffffff',
+      useCORS: true,
+      logging: false
+    }).then(canvas => {
+      // แปลงเป็นข้อมูลภาพ PNG
+      const image = canvas.toDataURL("image/png");
+      
+      // สร้างลิงก์และสั่งคลิกเพื่อดาวน์โหลด
+      const link = document.createElement('a');
+      link.href = image;
+      link.download = 'ตารางเรียน_ป2_คมชัด.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // คืนค่าปุ่มกลับเหมือนเดิม
+      btn.innerHTML = originalText;
+      btn.style.opacity = '1';
+      btn.style.cursor = 'pointer';
+    }).catch(err => {
+      console.error("เกิดข้อผิดพลาดในการสร้างรูปภาพ:", err);
+      alert("ไม่สามารถสร้างรูปภาพได้ กรุณาลองใหม่อีกครั้ง");
+      btn.innerHTML = originalText;
+      btn.style.opacity = '1';
+      btn.style.cursor = 'pointer';
+    });
+  }
+</script>
+
+</body>
+</html>
